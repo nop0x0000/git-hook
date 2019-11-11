@@ -1,0 +1,16 @@
+#! /bin/sh
+
+if [ -n "${GIT_DIR}" ]; then
+    hooksdir="./${GIT_DIR}/hooks/"
+else
+    hooksdir=`dirname "${0}"`"/"
+fi
+
+. "${hooksdir}common.sh"
+
+ticket="$(extractTicketId)"
+filteredComment=$(cat $1 | grep -v '^\s*#' |grep -v '^\s*$')
+
+if [ -n "${ticket}" -a -n "${filteredComment}" ]; then
+    appendMsgTo1stLine "$1" "${ticket}"
+fi
